@@ -6,6 +6,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <!--<item name="android:typeface">monospace</item> 设置主题,5.0以上好像没作用,用下面这个-->
+        <item name="android:textAppearance">@style/CustomTextAppearance</item><!--设置主题,5.0以上好像没作用,用下面这个-->
     </style>
-
+    <style name="CustomTextAppearance">
+        <item name="android:typeface">monospace</item>
+    </style>
 </resources>
