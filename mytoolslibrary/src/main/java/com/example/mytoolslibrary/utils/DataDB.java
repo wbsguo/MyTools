@@ -510,7 +510,10 @@ public class DataDB extends SQLiteOpenHelper {
         }
     }
 
-    public void deleteAll(){
+    /**
+     * 删除表数据
+     */
+    public void deleteDataAll(){
         synchronized (DataDB.class) {
             SQLiteDatabase db = this.getWritableDatabase();
             try {
@@ -518,6 +521,33 @@ public class DataDB extends SQLiteOpenHelper {
                 if (db.isOpen()) {
                     db.beginTransaction();
                     String sql="delete from "+SysTableConstant.T2_FOOD;
+                    db.execSQL(sql);
+                    db.setTransactionSuccessful();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                if (null != db) {
+                    if (db.isOpen()) {
+                        db.endTransaction();
+                    }
+                    db.close();
+                }
+            }
+        }
+    }
+
+    /**
+     * 删除表
+     */
+    public void deleteAll(){
+        synchronized (DataDB.class) {
+            SQLiteDatabase db = this.getWritableDatabase();
+            try {
+                db = this.getWritableDatabase();
+                if (db.isOpen()) {
+                    db.beginTransaction();
+                    String sql="DROP TABLE "+SysTableConstant.T2_FOOD;
                     db.execSQL(sql);
                     db.setTransactionSuccessful();
                 }
@@ -736,7 +766,6 @@ public class DataDB extends SQLiteOpenHelper {
 
         return result;
     }
-
     /**
      * 方法1：检查某表列是否存在
      *
