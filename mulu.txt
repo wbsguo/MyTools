@@ -1,0 +1,94 @@
+目录说明:
+gradle.properties：定义一些常量供build.gradle使用，比如可以配置签名相干信息如keystore位置，密码，keyalias等。
+settings.gradle：配置多模块的，比如你的项目有两个模块module-a,module-b,那末你就需要在这个文件中进行配置，格式以下：
+                include ':module-a',':module-b'
+gradle文件夹：这里面有两个文件，gradle-wrapper.jar和gradle-wrapper.properties,它们就是gradle wrapper。gradle项目都会有，你可以通过命令gradle init来创建它们（条件是本地安装了gradle并且配置到了环境变量中）。
+gradlew和gradlew.bat:这分别是linux下的shell脚本和windows下的批处理文件，它们的作用是根据gradle-wrapper.properties文件中的distributionUrl下载对应的gradle版本。这样就能够保证在不同的环境下构建时都是使用的统1版本的gradle，即便该环境没有安装gradle也能够，由于gradle wrapper会自动下载对应的gradle版本。
+                    gradlew的用法跟gradle1模1样，比如履行构建gradle build命令，你可以用gradlew build。gradlew即gradle wrapper的缩写。
+gradle仓库：
+gradle有3种仓库，maven仓库，ivy仓库和flat本地仓库。声明方式以下：
+maven{ url "..." } ivy{ url "..." } flatDir{ dirs 'xxx' }
+有1些仓库提供了别名，可直接使用：
+repositories{ mavenCentral() jcenter() mavenLocal() }
+导包:
+导入本地jar包：compile files('libs/xxx.jar') 如果libs下有多个jar文件，可以这样声明： compile fileTree(dir: 'libs', include: ['*.jar'])
+导入maven库:compile 'com.android.support:appcompat-v7:21.0.3'
+导入某个project：你的app是多模块的，假定有两个模块app和module-A,并且app模块是依赖module-A的，这时候候我们就需要在app模块的build.gradle中的dependencies结点下配置依赖：
+            compile project(':module-A')
+            并且你需要在settings.gradle中把module-A模块包括进来：
+            include ':module-A',':app'
+            另外，这类情况下module-A模块是作为库存在的，因此它的build.gradle中的插件声明通常应当是这样的：
+            apply plugin: 'com.android.library'
+            而且，作为library的模块module-A的build.gradle文件的defaultConfig中是不允许声明applicationId的，这点需要注意。
+声明3方maven仓库：
+可能你项目需要的1些库文件是在你们公司的私服上，这时候候repositories中唯一jcenter就不行了，你还需要把私服地址配到里面来，注意，应当配到project的build.gradle中的allprojects结点下或直接配到某个模块中如果唯一这个模块用到。
+配置方式：
+repositories{ maven{ url="http://mvnrepo.xxx.com" } }
+
+5.依赖3方aar文件：
+compile 'com.aaa.xxx:core:1.0.1@aar'
+
+6.将库项目导出为aar：
+首先你的项目必须是1个库项目，build.gradle中进行配置：
+apply plugin : 'com.android.library'
+然后你可以在命令行中进到项目目录，履行以下gradle任务：
+gradlew assembleRelease//确保该目录下有gradlew文件
+生成的aar在/build/output/aar文件夹中
+7.援用本地aar：
+ 首先将aar文件放到模块的libs目录下，然后在该模块的build.gradle中声明flat仓库：
+repositories{ flatDir{ dirs 'libs' } }
+最后在dependencies结点下依赖该aar模块：
+dependencies{ compile (name:'xxx',ext:'aar') }
+8.排除依赖：
+当出现依赖冲突的时候可以通过排除依赖解决，具体方式以下：
+compile (group:'xxx',name:'xxx',version:'xxx'){ exclude group:'xxx',module:'xxx'//module对应的就是artifactId }
+当出现依赖冲突的时候可以通过排除依赖解决，具体方式以下：
+compile (group:'xxx',name:'xxx',version:'xxx'){ exclude group:'xxx',module:'xxx'//module对应的就是artifactId }
+
+
+9.多dex支持（打包65k方法数限制）
+ 首先在build.gradle的buildConfig中增加以下配置：
+multiDexEnabled true
+接着，在dependencies结点下增加以下依赖：
+dependencies{ compile 'com.android.support:multidex:1.0.0' }
+最后，让你的Application继承MultiDexApplication,如果你的利用没有声明Application，可以在manifest文件的application结点下增加name属性，值为android.support.multidex.MultiDexApplication。
+详细内容参见官方文档。
+
+10.自动移除不用资源
+ 可以在buildTypes结点中增加以下配置：
+buildTypes{ release{ minifyEnabled true shrinkResources true } }
+11.疏忽lint毛病：
+可以在build.gradle文件中的android结点下增加以下配置：
+android{ lintOptions{ abortOnError false } }
+12.声明编译的java版本
+可以在build.gradle文件中的android结点下增加以下配置：
+compileOptions { sourceCompatibility JavaVersion.VERSION_1_7 targetCompatibility JavaVersion.VERSION_1_7 }
+
+13.利用签名配置
+首先在module的build.gradle中增加这些字段：
+storeFiles:keystore文件存储位置,通常是.jks文件 storePassword 密码 keyAlias keystore别名 keyPassword 密码
+
+具体配置方式为：
+首先在build.gradle的android结点下增加以下配置：
+signingConfigs { //debug版本的签名配置,通常不用配，由于有默许的debug签名 debug { } release { storeFile file("key.jks") storePassword "123456" keyAlias "mykey" keyPassword "123456" } }
+
+注：debug的默许签名为:
+
+signingConfig android.signingCongfigs.debug
+位置为
+${home}.androiddebug.keystore
+然后在buildTypes结点下的对应版本中添加上面的配置：
+buildTypes{ release{ signingConfig signingConfigs.release } }
+固然，release不是固定的名称，你可以随意取，比如这样：
+android { signingConfigs { debug { storeFile file("debug.keystore") } myConfig { storeFile file("other.keystore") storePassword "android" keyAlias "androiddebugkey" keyPassword "android" } } buildTypes { foo { debuggable true jniDebuggable true signingConfig signingConfigs.myConfig } } }
+
+真实开发中，把密码配置到build.gradle中不是很好的做法，最好的做法是放在gradle.properties中:
+RELEASE_STOREFILE=xxx.jks RELEASE_STORE_PASSWORD=123456 RELEASE_KEY_ALIAS=mykey RELEASE_KEY_PASSWORD=123456
+然后直接援用便可：
+storeFile file(RELEASE_STOREFILE) storePassword RELEASE_STORE_PASSWORD keyAlias RELEASE_KEY_ALIAS keyPassword RELEASE_KEY_PASSWORD
+
+14.定制buildConfig：
+在build.gradle中配置:
+buildTypes{ release{ buildConfigField "string","type",""release"" } debug{ buildConfigField "string","type",""debug"" } }
+这样就会在BuildConfig类中生成type字段：
+//build/generate/source/buildConfig/release/包名/ 路径下的BuildConfig.java public static final String type = "release" //build/generate/source/buildConfig/debug/包名/ 路径下的BuildConfig.java public static final String type = "debug"

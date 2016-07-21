@@ -15,9 +15,15 @@ import android.support.v4.app.ActivityCompat;
  * Created by wangbs on 16/5/16.
  */
 public class ViewUtils {
-
     public static final int REQUEST_CODE_ASK_PERMISSIONS = 100;
-
+    private static final String TAG="ViewUtils";
+    private static ViewUtils tools;
+    public static ViewUtils getInstance() {
+        if (tools == null) {
+            tools = new ViewUtils();
+        }
+        return tools;
+    }
     /**
      * 监测是否拥有某权限
      * @param activity

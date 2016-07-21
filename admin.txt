@@ -1,1 +1,50 @@
 说明
+build.gradle文件说明:
+apply plugin: 'com.android.application'//说明module的类型;com.android.application为程序，com.android.library为库
+android {
+    compileSdkVersion 22//编译的SDK版本
+    buildToolsVersion "22.0.1"//编译的Tools版本
+    defaultConfig {//默认配置
+        applicationId "com.nd.famlink"//应用程序的包名
+        minSdkVersion 8//支持的最低版本
+        targetSdkVersion 19//支持的目标版本
+        versionCode 52//版本号
+        versionName "3.0.1"//版本名
+    }
+    buildTypes { //build类型
+        release {//发布
+            minifyEnabled false //混淆开启
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'//指定混淆规则文件
+            signingConfig signingConfigs.release//设置签名信息
+        }
+        debug {//调试
+            signingConfig signingConfigs.release
+        }
+    }
+    lintOptions {// 移除lint检查的error
+      abortOnError false
+    }
+}
+
+buildscript { //buildscript中的声明是gradle脚本自身需要使用的资源
+    repositories {
+        jcenter() //指明的jcenter(), 之前版本则是mavenCentral(), jcenter可以理解成是一个新的中央远程仓库，兼容maven中心仓库，而且性能更优。
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:2.1.0'
+
+        // NOTE: Do not place your application dependencies here; they belong
+        // in the individual module build.gradle files
+    }
+}
+目录说明:
+.gradle	Gradle编译系统，版本由wrapper指定
+.idea	Android Studio IDE所需要的文件
+build	代码编译后生成的文件存放的位置
+gradle	wrapper的jar和配置文件所在的位置
+.gitignore	git使用的ignore文件
+build.gradle	gradle编译的相关配置文件（相当于Makefile）
+gradle.properties	gradle相关的全局属性设置
+gradlew	*nix下的gradle wrapper可执行文件
+graldew.bat	windows下的gradle wrapper可执行文件
+local.properties	本地属性设置（key设置，android sdk位置等属性），这个文件是不推荐上传到VCS中去的
