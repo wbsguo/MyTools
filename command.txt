@@ -1,0 +1,2 @@
+给签名key生成签名hash密匙:
+keytool -exportcert -alias androiddebugkey -keystore 密匙文件路径(/Users/wanglong/Desktop/android_sign/zixun.keystore)  | openssl sha1 -binary | openssl base64
