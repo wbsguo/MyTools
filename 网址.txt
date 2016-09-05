@@ -38,4 +38,5 @@ Html颜色表:http://www.qqai.net/tool/yansedaima/
 http://download.jikexueyuan.com/index/  极客学院:QQ
 IOS与Android最新设计尺寸:http://www.shejidaren.com/examples/tools/chichun/ui-design-spec.html
 http://www.runoob.com/sqlite/sqlite-unions-clause.html  sql语句;菜鸟教程
+http://www.open-open.com  深度开源
 常用库:nineoldandroids动画库;
