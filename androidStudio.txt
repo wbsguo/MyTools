@@ -1,0 +1,55 @@
+快捷键:
+find in path与replace in path：全局搜索
+find与Replace:单个搜索与替换
+F3:快速进入
+Duplicate Line or Block:复制一行
+Reformat Code..:格式化代码
+Generate…:set和get
+Surround With:try catch
+implementation(s):跳入到接口的实现类；
+双击shift:搜索
+Set-Editor-General-Auto Import:把Optimize imports on the fly和Add unambiguous imports on the fly选中：整理导入的包
+主题设置：Appearance(外观)－theme
+prefences-Plugins:添加插件；Android ButterKnife Zelezny：com.jakewharton:butterknife包；注解框架；
+Override Methods:重写父类的方法；
+Keymap->Main Menu->Code->Completion->Basic：代码提示列表；
+Show Intention Actions:错误修正列表
+Keymap->Main Menu->Navigate->File Structure：及outline功能；
+set-Editor-Appearance:设置显示行数
+支持中文的字体设定：Settings --> Appearance ，勾选 Override default fonts by (not recommended) ，选择一款支持中文的字体即可。
+编辑字体：Settings --> Editor --> Colors & Fonts --> Font 。默认系统显示的 Scheme 为 Defualt ，你是不能编辑的，你需要点击右侧的 Save As... ，保存一份自己的设置，并在当中设置。之后，在 Editor Font 中即可设置字体。Show only monospaced fonts 表示只显示等宽字体，一般来说，编程等宽字体使用较多，且效果较好。
+如果你想设置你的代码格式化时显示的样式：Settings --> Code Style；
+默认文件编码：Settings -->Editor-File Encodings;
+Android Studio编辑区域，在中部会有一条竖线。这条线是用以提醒程序员，一行的代码长度最好不要超过这条线。如果你不想显示这条线，可以这么设置。
+Settings --> Editor --> Appearance ，取消勾选 Show right margin (configured in Code Style options) 。
+检查更新：Settings -->System Settings- Updates；Stable Channel:正式版；Beta Channel：测试版；Dev Channel:开发版；Canary Channel:预览版;
+自动导入。当你从其他地方复制了一段代码到Android Studio中，默认的Android Studio不会自动导入这段代码中使用到的类的引用。你可以这么设置。
+Settings --> Editor --> Auto Import ，勾选 Add unambiguous improts on the fly.
+idk与idk路径设定： File --> Other Settings --> Default Project Structure。
+排查无用资源:
+项目中点击右键，在出现的右键菜单中有“Analyze” --> “run inspaction by Name ...”。在弹出的搜索窗口中输入想执行的检查类型，如“Unused Resources”。点击后会弹出“inspaction scope”选择窗口，选择检查的范围，一般选择整个项目或模块。“inspaction scope”窗口下面还可以设置文件过滤，选择好后点ok就开始检查了。然后就可以根据检查结果来去除重复的资源。
+Session ‘app’: Error Launching activity:解决1:关闭instant run；Settings->Build, Execution,Deployment找到Instant Run，把打钩的选项都去掉
+
+2.安装时不进行初始下载
+bin/idea.properties
+disable.android.first.run=true
+3.使用卡顿:1.修改 studio.xxx.vmoptions文件。Xms518m（启动时的内存）；-Xmx2048m（运行时的内存）2.添加并行和守护进程:增大gradle运行的java虚拟机的大小，在.gradle/gradle.properties 文件中添加org.gradle.daemon=true;org.gradle.parallel=true;http://blog.isming.me/2015/03/18/android-build-speed-up/
+4.http://tools.android.com/download/studio/canary:更新地址
+http://www.android-studio.org:studio中文工具网,有很多工具,可以不翻墙
+http://tools.android-studio.org/index.php/sdk studio社区
+http://forum.android-studio.org/forum.php:中文论坛
+6.更换avd目录:C:\Users\Administrator\.android\avd是模拟器镜像文件的，可以把他移除到其他文件：Nexus_5_API_21_x86.avd 文件夹 移出c盘，比如：D:\tool\avd\Nexus_5_API_21_x86.avd;配置Nexus_5_API_21_x86.ini，把C:\Users\Administrator\.android\avd\路径改为移出后的路径。
+7.Terminal面板，作用于命令行一样。File---settings---plugins-Termina,属于插件。
+
+性能监测：TraceView，参考网址：http://blog.jobbole.com/78995/
+1.studio打开TraceView：tools-Android Device Monitor-DDMS
+2.分析：性能：点击“Start Method Profiling”按钮，等红色小点变成黑色小点表示TraceView已经开始工作了。然后操作，最好不超过5s，然后再按下“Start Method Profiling”按钮，就会有性能分析图。
+3.指标分析：
+Incl Cpu Time：执行一个方法的总时间，里面有具体的parent和child时间，单位ms
+Excl Cpu Time：执行一个方法总时间－具体方法时间，即其余的时间。
+Incl Real Time实际的时间，与Incl Cpu Time差不多，可能会考虑手机切换，堵塞等会长一点。
+Excl Real Time同上。
+Calls + Recur Calls / Total：表示这个方法执行的次数，一个Call表示这个方法调用的次数，Recur Call表示递归调用次数，Total总次数；比如：140+0/140:表示，调用140次，没有递归调用，总共140次。
+Cpu Time / Call：calls次数的总时间。
+Real Time / Call与Cpu Time / Call；差不多，实际时间。
+方法接口监测：使用android.os.Debug.startMethodTracing();和android.os.Debug.stopMethodTracing();方法，当运行了这段代码的时候，就会有一个trace文件在/sdcard目录中生成，也可以调用startMethodTracing(String traceName) 设置trace文件的文件名，最后你可以使用adb pull /sdcard/test.trace /tmp 命令将trace文件复制到你的电脑中，然后用DDMS工具打开就会出现第一幅图了。
