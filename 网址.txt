@@ -1,4 +1,4 @@
-http://www.oschina.net/ wangbs2010@163.com;wang635102
+﻿http://www.oschina.net/ wangbs2010@163.com;wang635102
 http://www.apkbus.com/ wangxiao wang635102:QQ登录
 http://csdn.net/ wangbs2010@163.com wang635102:QQ登录
 www.eoeandroid.com  xiaosheng wang635102;QQ登录
@@ -42,3 +42,4 @@ http://www.open-open.com  深度开源
 http://www.open-open.com/lib/view/open1436262653692.html
 androidfine 快速开发框架
 常用库:nineoldandroids动画库;
+腾讯课堂:https://ke.qq.com/course/list?mt=1001&st=2003&tt=3021
